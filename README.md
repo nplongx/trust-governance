@@ -4,6 +4,10 @@ Linux-oriented trust configuration, Ed25519 public-key verification, signed appr
 
 This package is a trust-domain library, not a standalone identity provider, authorization server, key-management system, workflow engine, or production Governance deployment.
 
+## Terminology
+
+See [TERMINOLOGY.md](TERMINOLOGY.md) for shared identifier, lifecycle, evidence, time-unit, and compatibility conventions.
+
 ## Included capabilities
 
 - Strict administrator-managed trust configurations for five separate AGG domains and immutable Ed25519 public-root fingerprints.
