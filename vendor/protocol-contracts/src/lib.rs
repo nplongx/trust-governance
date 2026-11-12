@@ -19,12 +19,6 @@ pub mod mcp_service_v1;
 pub const LEGACY_AGENT_MESSAGE_PROTOCOL_ID: &str = "cos-ap";
 /// Version retained by the legacy agent-message envelope.
 pub const LEGACY_AGENT_MESSAGE_PROTOCOL_VERSION: u32 = 1;
-/// Legacy constant name retained for source compatibility.
-#[deprecated(note = "use LEGACY_AGENT_MESSAGE_PROTOCOL_ID")]
-pub const COS_AP_PROTOCOL: &str = LEGACY_AGENT_MESSAGE_PROTOCOL_ID;
-/// Legacy constant name retained for source compatibility.
-#[deprecated(note = "use LEGACY_AGENT_MESSAGE_PROTOCOL_VERSION")]
-pub const COS_AP_VERSION: u32 = LEGACY_AGENT_MESSAGE_PROTOCOL_VERSION;
 /// Maximum number of execution batch items.
 pub const MAX_EXECUTION_BATCH_ITEMS: usize = 32;
 /// Maximum command length in Unicode scalar values.
