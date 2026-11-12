@@ -1,0 +1,30 @@
+[package]
+name = "runalith-trust"
+version = "0.1.0"
+edition = "2024"
+rust-version = "1.85"
+license = "MIT"
+description = "Runalith trust configuration, Ed25519 verification, approval policy, and governance evidence primitives"
+repository = "https://github.com/nplongx/runalith-trust"
+readme = "README.md"
+keywords = ["ed25519", "trust", "governance", "approval"]
+categories = ["authentication", "cryptography"]
+
+[dependencies]
+chrono = { version = "=0.4.45", features = ["serde", "clock"] }
+hex = "=0.4.3"
+protocol-contracts = { version = "=0.1.0", git = "https://github.com/nplongx/protocol-contracts", rev = "6dc2e11bed7fa74bb5e508933eed34e17afd2cac" }
+rusqlite = { version = "=0.31.0", features = ["bundled"] }
+serde = { version = "=1.0.228", features = ["derive"] }
+serde_json = { version = "=1.0.151", features = ["float_roundtrip", "unbounded_depth"] }
+sha2 = "=0.10.9"
+tempfile = "=3.27.0"
+thiserror = "=2.0.20"
+uuid = { version = "=1.26.1", features = ["v4", "serde"] }
+
+[lints.rust]
+unsafe_code = "forbid"
+missing_docs = "warn"
+
+[lints.clippy]
+all = "warn"

@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  rust:
+    name: Rust ${{ matrix.toolchain }}
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        toolchain: [1.85.0, stable]
+    steps:
+      - uses: actions/checkout@v7.0.1
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: ${{ matrix.toolchain }}
+          components: clippy, rustfmt
+      - uses: Swatinem/rust-cache@v2
+      - name: Verify OpenSSL runtime
+        run: test -x /usr/bin/openssl && test "$(stat -c '%u' /usr/bin/openssl)" = 0 && test -z "$(find /usr/bin/openssl -maxdepth 0 -perm /022 -print -quit)"
+      - name: Format
+        run: cargo fmt -- --check
+      - name: Test
+        run: cargo test --locked
+      - name: Clippy
+        run: cargo clippy --all-targets --locked -- -D warnings
+      - name: Documentation
+        env:
+          RUSTDOCFLAGS: -D warnings
+        run: cargo doc --locked --no-deps
+      - name: Dependency metadata
+        run: cargo metadata --locked --format-version 1 --no-deps
