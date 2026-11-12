@@ -126,7 +126,10 @@ impl Ed25519PublicKey {
                 "public key PEM must be non-empty and within 16 KiB",
             ));
         }
-        if !pem.contains("-----BEGIN PUBLIC KEY-----") {
+        let supplied_der = decode_public_key_pem(pem)?;
+        if supplied_der.len() != ED25519_SPKI_PREFIX.len() + 32
+            || !supplied_der.starts_with(&ED25519_SPKI_PREFIX)
+        {
             return Err(TrustCryptoError::InvalidPublicKey);
         }
         let key_file = write_private_temp(pem.as_bytes())?;
@@ -146,7 +149,7 @@ impl Ed25519PublicKey {
             return Err(map_public_key_parse_failure(&output.stderr));
         }
         let der = output.stdout;
-        if der.len() != ED25519_SPKI_PREFIX.len() + 32 || !der.starts_with(&ED25519_SPKI_PREFIX) {
+        if der != supplied_der {
             return Err(TrustCryptoError::InvalidPublicKey);
         }
         let fingerprint = hex::encode(Sha256::digest(&der));
@@ -213,6 +216,22 @@ impl Ed25519PublicKey {
         let signature = decode_base64(signature_base64)?;
         self.verify(message, &signature)
     }
+}
+
+fn decode_public_key_pem(pem: &str) -> Result<Vec<u8>, TrustCryptoError> {
+    const BEGIN: &str = "-----BEGIN PUBLIC KEY-----";
+    const END: &str = "-----END PUBLIC KEY-----";
+    let body = pem
+        .trim()
+        .strip_prefix(BEGIN)
+        .and_then(|body| body.strip_suffix(END))
+        .ok_or(TrustCryptoError::InvalidPublicKey)?;
+    let compact = body
+        .bytes()
+        .filter(|byte| !byte.is_ascii_whitespace())
+        .collect::<Vec<_>>();
+    let encoded = std::str::from_utf8(&compact).map_err(|_| TrustCryptoError::InvalidPublicKey)?;
+    decode_base64(encoded).map_err(|_| TrustCryptoError::InvalidPublicKey)
 }
 
 fn write_private_temp(bytes: &[u8]) -> Result<NamedTempFile, TrustCryptoError> {

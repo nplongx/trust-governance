@@ -32,7 +32,7 @@ A structurally valid envelope, a matching hash, or a locally verified Ed25519 si
 
 ## Cryptographic implementation and platform
 
-The Ed25519 verifier invokes `/usr/bin/openssl` directly without a shell. It validates the executable metadata (root ownership and no group/other write permission), clears the child environment, uses private temporary files, bounds public-key and message sizes, and classifies operational failures separately from invalid signatures.
+The Ed25519 verifier first validates the PEM envelope, strict Base64 body, exact Ed25519 SPKI prefix and DER length locally, then invokes `/usr/bin/openssl` directly without a shell. It compares OpenSSL's parsed DER with the supplied DER, validates executable metadata (root ownership and no group/other write permission), clears the child environment, uses private temporary files, bounds public-key and message sizes, and classifies operational failures separately from invalid signatures. Local PEM prevalidation prevents malformed input from being misclassified merely because OpenSSL versions emit different parser diagnostics.
 
 Requires Linux/Unix semantics and an available trusted OpenSSL binary at `/usr/bin/openssl`. The exact path and ownership check are intentional. The package does not bundle OpenSSL or silently switch to another executable.
 
@@ -63,7 +63,7 @@ The tests use generated signing keys, in-memory/temporary SQLite databases, and 
 
 ## Provenance
 
-Extracted from `nplongx/runalith` at source commit `29c24cfa2b6ead5704d26cf2746bc384f2938b80`, from `rust/crates/runalith-trust`. The `runalith-protocol` workspace dependency is replaced with the immutable public `protocol-contracts` repository. Trust-domain logic is retained; this extraction does not constitute a security audit or production approval.
+Extracted from `nplongx/runalith` at source commit `29c24cfa2b6ead5704d26cf2746bc384f2938b80`, from `rust/crates/runalith-trust`. The `runalith-protocol` workspace dependency is replaced with the immutable public `protocol-contracts` repository. This extraction also adds strict local PEM/Base64/SPKI prevalidation before OpenSSL invocation so malformed-key classification does not depend on OpenSSL diagnostic wording. Other trust-domain logic is retained. This extraction does not constitute a security audit or production approval.
 
 ## License
 

@@ -16,6 +16,7 @@ Report suspected vulnerabilities privately to the repository maintainer before p
 
 - The Governance cross-service receipt envelope in `governance_receipt.rs` is explicitly draft/unratified in source documentation.
 - The fixed five trust domains and exact scopes are Runalith AGG-specific.
+- Public-key input is locally constrained to strict Base64 SPKI DER matching the Ed25519 algorithm identifier and 32-byte key size before OpenSSL parsing.
 - The OpenSSL verifier requires `/usr/bin/openssl` to be root-owned and not group/other-writable.
 - A local signature verification result does not establish authorization, current trust, reviewer authority, remote side-effect completion, or workflow settlement.
 - SQLite schema and operational migration/backup are host responsibilities.
