@@ -332,8 +332,7 @@ dependencies = [
 
 [[package]]
 name = "protocol-contracts"
-version = "0.1.0"
-source = "git+https://github.com/nplongx/protocol-contracts?rev=6dc2e11bed7fa74bb5e508933eed34e17afd2cac#6dc2e11bed7fa74bb5e508933eed34e17afd2cac"
+version = "0.1.1"
 dependencies = [
  "chrono",
  "hex",
@@ -357,22 +356,6 @@ name = "r-efi"
 version = "6.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf"
-
-[[package]]
-name = "runalith-trust"
-version = "0.1.0"
-dependencies = [
- "chrono",
- "hex",
- "protocol-contracts",
- "rusqlite",
- "serde",
- "serde_json",
- "sha2",
- "tempfile",
- "thiserror",
- "uuid",
-]
 
 [[package]]
 name = "rusqlite"
@@ -532,6 +515,22 @@ dependencies = [
  "proc-macro2",
  "quote",
  "syn 3.0.10",
+]
+
+[[package]]
+name = "trust-governance"
+version = "0.2.0"
+dependencies = [
+ "chrono",
+ "hex",
+ "protocol-contracts",
+ "rusqlite",
+ "serde",
+ "serde_json",
+ "sha2",
+ "tempfile",
+ "thiserror",
+ "uuid",
 ]
 
 [[package]]

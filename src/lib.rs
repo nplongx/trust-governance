@@ -14,6 +14,8 @@ use sha2::{Digest, Sha256};
 use tempfile::NamedTempFile;
 use thiserror::Error;
 
+pub use protocol_contracts as contracts;
+
 pub mod approval_decision;
 pub mod approval_policy;
 pub mod domain_prefixed_signature;

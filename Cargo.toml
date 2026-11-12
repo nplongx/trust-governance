@@ -1,11 +1,12 @@
 [package]
-name = "runalith-trust"
-version = "0.1.0"
+name = "trust-governance"
+version = "0.2.0"
 edition = "2024"
 rust-version = "1.85"
 license = "MIT"
-description = "Runalith trust configuration, Ed25519 verification, approval policy, and governance evidence primitives"
-repository = "https://github.com/nplongx/runalith-trust"
+publish = false
+description = "Ed25519 trust configuration, approval governance, and signed evidence verification primitives"
+repository = "https://github.com/nplongx/trust-governance"
 readme = "README.md"
 keywords = ["ed25519", "trust", "governance", "approval"]
 categories = ["authentication", "cryptography"]
@@ -13,7 +14,7 @@ categories = ["authentication", "cryptography"]
 [dependencies]
 chrono = { version = "=0.4.45", features = ["serde", "clock"] }
 hex = "=0.4.3"
-protocol-contracts = { version = "=0.1.0", git = "https://github.com/nplongx/protocol-contracts", rev = "6dc2e11bed7fa74bb5e508933eed34e17afd2cac" }
+protocol-contracts = { version = "=0.1.1", path = "vendor/protocol-contracts" }
 rusqlite = { version = "=0.31.0", features = ["bundled"] }
 serde = { version = "=1.0.228", features = ["derive"] }
 serde_json = { version = "=1.0.151", features = ["float_roundtrip", "unbounded_depth"] }

@@ -3,7 +3,7 @@
 //! `TrustLedger` remains available for compatibility and isolated tests. It is
 //! not a D-01 production persistence adapter. Production approval must use a
 //! `TrustConfigurationObserver` whose transaction-aware method reads the
-//! workflow Store connection; `runalith-store::Store` implements that path.
+//! host-owned transactional workflow connection; the host implements that adapter.
 //! Only an explicit administrator observation advances trust configuration.
 
 use std::path::Path;

@@ -1,8 +1,17 @@
-# Runalith Trust
+# Trust Governance
 
-Linux-oriented trust configuration, Ed25519 public-key verification, signed approval policy, reviewer lifecycle, maker/checker evidence verification, trust high-water ledger, and Governance receipt primitives extracted from Runalith.
+A standalone trust and governance library with Ed25519 public-key verification, signed approval policy, reviewer lifecycle, maker/checker evidence verification, trust high-water ledger, and signed decision receipts.
 
-This package is a trust-domain library, not a standalone identity provider, authorization server, key-management system, workflow engine, or production Governance deployment.
+This package is a trust-domain library, not an identity provider, authorization server, key-management system, workflow engine, or deployed governance authority.
+
+## Install
+
+```toml
+[dependencies]
+trust-governance = { git = "https://github.com/nplongx/trust-governance", tag = "v0.2.0" }
+```
+
+All parsing/canonicalization dependencies required for this crate are included under `vendor/`.
 
 ## Terminology
 
@@ -15,7 +24,7 @@ See [TERMINOLOGY.md](TERMINOLOGY.md) for shared identifier, lifecycle, evidence,
 - Strict signed-envelope, domain-separated-signature, reviewer-attestation, approval-policy, and evidence-verification primitives.
 - Maker/checker quorum verification with distinct reviewer identities, bounded validity, policy high-water checks, and one-use nonce consumption inside a caller-owned SQLite transaction.
 - Append-only trust configuration history, monotonic version checks, root rotation/revocation lifecycle, and reviewer identity lifecycle contracts.
-- Trust snapshot references, Governance receipt binding, durable nonce-port contracts, and an in-process Governance service boundary with host-injected authentication, signer, verifier, and transactional backend ports.
+- Trust snapshot references, Governance receipt binding, durable nonce-port contracts, and an in-process governance service boundary with host-injected authentication, signer, verifier, and transactional backend ports.
 
 ## Authority boundaries
 
@@ -46,9 +55,9 @@ Requires Linux/Unix semantics and an available trusted OpenSSL binary at `/usr/b
 
 ## Dependencies
 
-The only Runalith crate dependency is [`protocol-contracts`](https://github.com/nplongx/protocol-contracts), pinned to immutable Git revision `6dc2e11bed7fa74bb5e508933eed34e17afd2cac`.
+Strict parsing and canonicalization source required by this package is included as an internally vendored snapshot under `vendor/`, with its license and source revision. No sibling-package or Git dependency is required.
 
-This Git dependency is not available from crates.io. The package currently targets Cargo Git dependencies; crates.io packaging requires `protocol-contracts` to be published or vendored.
+Crates.io publication is disabled because the package intentionally resolves these components from local vendored paths. Consume it as a Git dependency.
 
 ## Build and test
 
@@ -63,12 +72,19 @@ RUSTDOCFLAGS='-D warnings' cargo doc --locked --no-deps
 
 GitHub Actions runs the suite on Rust 1.85 and stable on Ubuntu 24.04.
 
-The tests use generated signing keys, in-memory/temporary SQLite databases, and deterministic protocol fixtures. They do not contact external identity providers or deploy a Governance service.
+The current approval profile requires exactly five independently administered trust domains and exact signing scopes. It is a closed compatibility profile, not a generic API for arbitrary trust-domain registration.
+
+The tests use generated signing keys, in-memory/temporary SQLite databases, and deterministic protocol fixtures. They do not contact external identity providers or deploy a governance service.
 
 ## Provenance
 
-Extracted from `nplongx/runalith` at source commit `29c24cfa2b6ead5704d26cf2746bc384f2938b80`, from `rust/crates/runalith-trust`. The `runalith-protocol` workspace dependency is replaced with the immutable public `protocol-contracts` repository. This extraction also adds strict local PEM/Base64/SPKI prevalidation before OpenSSL invocation so malformed-key classification does not depend on OpenSSL diagnostic wording. Other trust-domain logic is retained. This extraction does not constitute a security audit or production approval.
+Created from immutable source snapshot `29c24cfa2b6ead5704d26cf2746bc384f2938b80`. Parsing and canonicalization source required for compilation is vendored locally. This package has not undergone an independent security audit and is not production approval.
 
 ## License
 
 MIT. See [LICENSE](LICENSE).
+
+
+## Legacy storage and signature identifiers
+
+Version 1 retains exact signature-domain prefixes, SQLite table/trigger names, and savepoint identifiers already used by the approval and attestation profiles. These values are part of signed or persisted compatibility contracts, not package identity or repository dependencies. Renaming them in place would invalidate signatures or make existing ledger state invisible. A replacement requires a new protocol/storage version and an explicit migration.
