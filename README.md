@@ -8,7 +8,7 @@ This package is a trust-domain library, not an identity provider, authorization 
 
 ```toml
 [dependencies]
-trust-governance = { git = "https://github.com/nplongx/trust-governance", tag = "v0.2.0" }
+trust-governance = { git = "https://github.com/nplongx/trust-governance", tag = "v0.2.1" }
 ```
 
 All parsing/canonicalization dependencies required for this crate are included under `vendor/`.
